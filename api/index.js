@@ -51,6 +51,11 @@ export default async (req, res) => {
   } = req.query;
   res.setHeader("Content-Type", "image/svg+xml");
 
+  const ALLOWED_USER = process.env.ALLOWED_USER;
+  if (!username || username !== ALLOWED_USER) {
+    return res.send(renderError({ message: "Forbidden", renderOptions: {} }));
+  }
+
   const access = guardAccess({
     res,
     id: username,
